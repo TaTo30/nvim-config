@@ -85,7 +85,12 @@ return {
     end,
   },
 
-  -- Rust
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = true
+  },
+    -- Rust
   {
     "mrcjkb/rustaceanvim",
     version = "^5",
