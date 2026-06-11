@@ -23,3 +23,5 @@ require("lazy").setup("plugins", {
 })
 
 require("config.keymaps")
+
+vim.cmd.colorscheme "catppuccin-nvim"

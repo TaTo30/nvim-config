@@ -20,7 +20,7 @@ return {
     dependencies = { "williamboman/mason.nvim" },
     config = function()
       require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "pyright", "ts_ls" },
+        ensure_installed = { "lua_ls", "pyright", "ts_ls", "omnisharp" },
         automatic_enable = true,
       })
     end,
@@ -51,6 +51,12 @@ return {
         },
       })
 
+      -- omnisharp: C# language server configuration
+      vim.lsp.config("omnisharp", {
+        cmd = { "omnisharp" },
+        root_markers = { ".csproj", ".sln" },
+      })
+
       -- Diagnostic keymaps (global)
       vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, { desc = "Previous diagnostic" })
       vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, { desc = "Next diagnostic" })
@@ -77,5 +83,12 @@ return {
         end,
       })
     end,
+  },
+
+  -- Rust
+  {
+    "mrcjkb/rustaceanvim",
+    version = "^5",
+    lazy = false,
   },
 }

@@ -29,12 +29,15 @@ return {
   -- Statusline
   {
     "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
+    lazy = false,
+    priority = 900,
     dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin/nvim" },
     config = function()
+      require("catppuccin")
+      
       require("lualine").setup({
         options = {
-          theme = "catppuccin",
+          theme = "catppuccin-mocha",
           component_separators = { left = "", right = "" },
           section_separators = { left = "", right = "" },
           globalstatus = true,
