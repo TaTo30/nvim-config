@@ -19,7 +19,10 @@ return {
         "markdown_inline",
         "bash",
         "c_sharp",
-        "rust"
+        "rust",
+        "go",
+        "gomod",
+        "gosum"
       },
       auto_install = true,
       highlight = {
