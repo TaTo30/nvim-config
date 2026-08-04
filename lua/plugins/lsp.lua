@@ -21,7 +21,61 @@ return {
     config = function()
       require("mason-lspconfig").setup({
         ensure_installed = { "lua_ls", "pyright", "ts_ls", "omnisharp", "gopls" },
-        automatic_enable = true,
+        -- Handlers to configure servers (v2 API)
+        handlers = {
+          -- Default handler for all servers
+          function(server_name)
+            require("lspconfig")[server_name].setup({
+              capabilities = require("cmp_nvim_lsp").default_capabilities(),
+            })
+          end,
+          -- Custom handler for omnisharp to handle multi-project workspaces
+          ["omnisharp"] = function()
+            local lspconfig = require("lspconfig")
+            lspconfig.omnisharp.setup({
+              cmd = { vim.fn.stdpath("data") .. "/mason/bin/OmniSharp" },
+              capabilities = require("cmp_nvim_lsp").default_capabilities(),
+              -- Prioritize .sln files for multi-project workspaces
+              root_dir = function(fname)
+                local util = require("lspconfig.util")
+                -- First try to find .sln in parent directories (for multi-project solutions)
+                local sln = util.root_pattern("*.sln")(fname)
+                if sln then
+                  return sln
+                end
+                -- Fall back to .csproj or .git
+                return util.root_pattern("*.csproj", ".git")(fname)
+              end,
+              settings = {
+                FormattingOptions = {
+                  EnableEditorConfigSupport = true,
+                  OrganizeImports = true,
+                },
+                RoslynExtensionsOptions = {
+                  EnableAnalyzersSupport = true,
+                  EnableImportCompletion = true,
+                  AnalyzeOpenDocumentsOnly = false,
+                },
+                Sdk = {
+                  IncludePrereleases = true,
+                },
+              },
+            })
+          end,
+          -- Custom handler for lua_ls with Neovim-aware settings
+          ["lua_ls"] = function()
+            require("lspconfig").lua_ls.setup({
+              capabilities = require("cmp_nvim_lsp").default_capabilities(),
+              settings = {
+                Lua = {
+                  diagnostics = { globals = { "vim" } },
+                  workspace = { checkThirdParty = false },
+                  telemetry = { enable = false },
+                },
+              },
+            })
+          end,
+        },
       })
     end,
   },
@@ -35,28 +89,6 @@ return {
       "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
-      -- Apply cmp capabilities to all servers globally
-      vim.lsp.config("*", {
-        capabilities = require("cmp_nvim_lsp").default_capabilities(),
-      })
-
-      -- lua_ls: extend default config with vim-aware settings
-      vim.lsp.config("lua_ls", {
-        settings = {
-          Lua = {
-            diagnostics = { globals = { "vim" } },
-            workspace = { checkThirdParty = false },
-            telemetry = { enable = false },
-          },
-        },
-      })
-
-      -- omnisharp: C# language server configuration
-      vim.lsp.config("omnisharp", {
-        cmd = { "omnisharp" },
-        root_markers = { ".csproj", ".sln" },
-      })
-
       -- Diagnostic keymaps (global)
       vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, { desc = "Previous diagnostic" })
       vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, { desc = "Next diagnostic" })
