@@ -62,6 +62,140 @@ return {
         },
       }
 
+      -- Go configuration with delve
+      dap.adapters.delve = {
+        type = "server",
+        port = "${port}",
+        executable = {
+          command = vim.fn.stdpath("data") .. "/mason/bin/dlv",
+          args = { "dap", "-l", "127.0.0.1:${port}" },
+        },
+      }
+
+      dap.configurations.go = {
+        {
+          type = "delve",
+          name = "Debug",
+          request = "launch",
+          program = "${file}",
+        },
+        {
+          type = "delve",
+          name = "Debug Package",
+          request = "launch",
+          program = "${fileDirname}",
+        },
+        {
+          type = "delve",
+          name = "Debug test (go.mod)",
+          request = "launch",
+          mode = "test",
+          program = "./${relativeFileDirname}",
+        },
+        {
+          type = "delve",
+          name = "Attach to Process",
+          mode = "local",
+          request = "attach",
+          processId = require("dap.utils").pick_process,
+        },
+      }
+
+      -- Python configuration with debugpy
+      dap.adapters.python = {
+        type = "executable",
+        command = vim.fn.stdpath("data") .. "/mason/bin/debugpy-adapter",
+      }
+
+      dap.configurations.python = {
+        {
+          type = "python",
+          request = "launch",, "delve", "debugpy", "js-debug-adapter"
+          name = "Launch file",
+          program = "${file}",
+          pythonPath = function()
+            -- Use virtual environment if available
+            local cwd = vim.fn.getcwd()
+            if vim.fn.executable(cwd .. "/venv/bin/python") == 1 then
+              return cwd .. "/venv/bin/python"
+            elseif vim.fn.executable(cwd .. "/.venv/bin/python") == 1 then
+              return cwd .. "/.venv/bin/python"
+            else
+              return "/usr/bin/python3"
+            end
+          end,
+        },
+        {
+          type = "python",
+          request = "launch",
+          name = "Launch file with arguments",
+          program = "${file}",
+          args = function()
+            local args_string = vim.fn.input("Arguments: ")
+            return vim.split(args_string, " +")
+          end,
+          pythonPath = function()
+            local cwd = vim.fn.getcwd()
+            if vim.fn.executable(cwd .. "/venv/bin/python") == 1 then
+              return cwd .. "/venv/bin/python"
+            elseif vim.fn.executable(cwd .. "/.venv/bin/python") == 1 then
+              return cwd .. "/.venv/bin/python"
+            else
+              return "/usr/bin/python3"
+            end
+          end,
+        },
+      }
+
+      -- JavaScript/TypeScript configuration with js-debug-adapter
+      dap.adapters["pwa-node"] = {
+        type = "server",
+        host = "localhost",
+        port = "${port}",
+        executable = {
+          command = "node",
+          args = {
+            vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js",
+            "${port}",
+          },
+        },
+      }
+
+      dap.configurations.javascript = {
+        {
+          type = "pwa-node",
+          request = "launch",
+          name = "Launch file",
+          program = "${file}",
+          cwd = "${workspaceFolder}",
+        },
+        {
+          type = "pwa-node",
+          request = "attach",
+          name = "Attach",
+          processId = require("dap.utils").pick_process,
+          cwd = "${workspaceFolder}",
+        },
+      }
+
+      dap.configurations.typescript = {
+        {
+          type = "pwa-node",
+          request = "launch",
+          name = "Launch file",
+          program = "${file}",
+          cwd = "${workspaceFolder}",
+          runtimeExecutable = "ts-node",
+        },
+        {
+          type = "pwa-node",
+          request = "attach",
+          name = "Attach",
+          processId = require("dap.utils").pick_process,
+          cwd = "${workspaceFolder}",
+        },
+      }
+
       -- Keymaps for debugging
       vim.keymap.set("n", "<F5>", dap.continue, { desc = "Debug: Start/Continue" })
       vim.keymap.set("n", "<F10>", dap.step_over, { desc = "Debug: Step Over" })
