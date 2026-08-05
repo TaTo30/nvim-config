@@ -165,7 +165,56 @@ Wait for all installations to complete.
 
 ---
 
-## 📦 What's Included
+## 🧩 Plugins
+
+### nvim-cmp
+- **Repository**: `hrsh7th/nvim-cmp`
+- **Dependencies**: 
+  - `hrsh7th/cmp-nvim-lsp`
+  - `hrsh7th/cmp-buffer`
+  - `hrsh7th/cmp-path`
+  - `hrsh7th/cmp-cmdline`
+  - `hrsh7th/cmp-vsnip`
+- **Version**: latest
+- **Description**: A completion engine for Neovim that supports multiple sources.
+
+### copilot.vim
+- **Repository**: `github/copilot.vim`
+- **Dependencies**: 
+  - `olimorris/codecompanion.nvim`
+  - `nvim-lua/plenary.nvim`
+  - `nvim-treesitter/nvim-treesitter`
+- **Version**: latest
+- **Description**: GitHub Copilot integration for Neovim, providing AI-driven code suggestions.
+
+### gitsigns.nvim
+- **Repository**: `lewis6991/gitsigns.nvim`
+- **Version**: latest
+- **Description**: Git integration for Neovim that shows signs in the gutter for added/modified/removed lines.
+
+### mason.nvim
+- **Repository**: `mason-org/mason.nvim`
+- **Version**: latest
+- **Description**: A package manager for Neovim, enabling easy installation of LSP servers and other tools.
+
+### nvim-treesitter
+- **Repository**: `nvim-treesitter/nvim-treesitter`
+- **Version**: latest
+- **Description**: Neovim Treesitter configurations and abstraction layer, providing enhanced syntax highlighting.
+
+### catppuccin
+- **Repository**: `catppuccin/nvim`
+- **Version**: latest
+- **Description**: A color scheme for Neovim that provides a visually pleasing experience.
+
+### lualine.nvim
+- **Repository**: `nvim-lualine/lualine.nvim`
+- **Dependencies**: 
+  - `nvim-tree/nvim-web-devicons`
+  - `catppuccin/nvim`
+- **Version**: latest
+- **Description**: A blazing fast and easy to configure Neovim statusline plugin.
+
 
 ### Language Support
 
