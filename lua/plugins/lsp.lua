@@ -1,7 +1,52 @@
 return {
   -- LSP CONFIGURATION
   {
-    "neovim/nvim-lspconfig"
+    "neovim/nvim-lspconfig",
+    config = function()
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+      local mason = vim.fn.stdpath("data") .. "/mason/packages"
+
+      local vue_plugin = mason
+        .. "/vue-language-server/node_modules/@vue/language-server"
+
+      vim.lsp.config("vue_ls", {
+        capabilities = capabilities,
+        filetypes = { "vue" },
+      })
+
+      vim.lsp.config("vtsls", {
+        capabilities = capabilities,
+
+        settings = {
+          vtsls = {
+            tsserver = {
+              globalPlugins = {
+                {
+                  name = "@vue/typescript-plugin",
+                  location = vue_plugin,
+                  languages = { "vue" },
+                  configNamespace = "typescript",
+                },
+              },
+            },
+          },
+        },
+
+        filetypes = {
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact",
+          "vue",
+        },
+      })
+
+      vim.lsp.enable({
+        "vue_ls",
+        "vtsls",
+      })
+    end,
   },
 
   {
@@ -20,14 +65,7 @@ return {
     dependencies = {
         { 
           "mason-org/mason.nvim", 
-          opts = {
-            ensure_installed = {
-              "lua_ls",
-              "pyright",
-              "ts_ls",
-              "roslyn"
-            },
-          } 
+          opts = {}
         },
         "neovim/nvim-lspconfig",
     },
