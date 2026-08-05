@@ -106,6 +106,10 @@ return {
     event = { "CmdlineEnter" },
     ft = { "go", "gomod" },
     build = ':lua require("go.install").update_all_sync()',
+  },
+  {
+    "seblyng/roslyn.nvim",
+    opts = {}
   }
 }
 
