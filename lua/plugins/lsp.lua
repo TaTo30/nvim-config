@@ -90,7 +90,6 @@ return {
     dependencies = {
       "ray-x/guihua.lua",
       "neovim/nvim-lspconfig",
-      "nvim-treesitter/nvim-treesitter",
     },
     opts = function()
       require("go").setup(opts)
