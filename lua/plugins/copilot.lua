@@ -10,6 +10,13 @@ return {
         chat = {
           adapter = "copilot",
           model = "gpt-5-mini",
+          tools = {
+            ["web_search"] = {
+              opts = {
+                adapter = "duckduckgo"
+              }
+            }
+          }
         },
         inline = {
           adapter = "copilot",
