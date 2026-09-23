@@ -8,6 +8,7 @@ vim.pack.add({
   'https://github.com/hrsh7th/cmp-nvim-lsp-signature-help',
   'https://github.com/hrsh7th/nvim-cmp',
   'https://github.com/rmagatti/auto-session',
+  'https://github.com/windwp/nvim-autopairs'
 })
 
 local cmp = require("cmp")
