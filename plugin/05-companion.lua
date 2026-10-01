@@ -4,18 +4,18 @@ vim.pack.add({
 })
 
 require('codecompanion').setup({
-  adapters = {
-    http = {
-      openai_compatible = function()
-        return require("codecompanion.adapters").extend("openai_compatible", {
-          env = {
-            api_key = "apikey",
-            url = "http://127.0.0.1:1234"
-          }
-        })
-      end,
-    }
-  },
+  -- adapters = {
+  --   http = {
+  --     openai_compatible = function()
+  --       return require("codecompanion.adapters").extend("openai_compatible", {
+  --         env = {
+  --           api_key = "apikey",
+  --           url = "http://127.0.0.1:1234"
+  --         }
+  --       })
+  --     end,
+  --   }
+  -- },
 
   interactions = {
     chat = {
